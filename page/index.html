@@ -11,26 +11,39 @@
 
     <div class="content">
         <div class="module">
-            <div>
+            <div class="items">
                 <h2>Basic</h2>
-                <button>Test 1</button>
+
+                <div class="optionbutton">
+                    <input type="text" name="arguments" id="arguments">
+                    <button onclick="execute('ping');">Ping</button>
+                </div>
+                
                 <button>Test 2</button>
                 <button>Test 3</button>
             </div>
-            <div>
+
+
+            <div class="items">
                 <h2>WIFI</h2>
                 <button>sample</button>
                 <button>sample</button>
             </div>
-            <div>
+
+
+            <div class="items">
                 <h2>WIFI</h2>
                 <button>sample</button>
             </div>
-            <div>
+
+
+            <div class="items">
                 <h2>WIFI</h2>
                 <button>sample</button>
             </div>
-            <div>
+
+
+            <div class="items">
                 <h2>WIFI</h2>
                 <button>sample</button>
                 <button>sample</button>
@@ -39,5 +52,26 @@
             </div>
         </div>
     </div>
+
+
+    <script>
+        function execute(command) {
+            var req = new XMLHttpRequest();
+            var arguments = document.getElementsByName("arguments")[0].textContent.replace(' ','+');
+            
+            var url = location.href + "api/execute/" + command;
+            console.log(url);
+
+            req.onreadystatechange = () => {
+                if(req.status == 200) 
+                {
+                    console.log(req.responseText);
+                }
+            };
+
+            req.open("GET",url);
+            req.send();
+        }
+    </script>
 </body>
 

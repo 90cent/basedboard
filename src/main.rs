@@ -5,17 +5,13 @@ use std::sync::mpsc::{self,Receiver,Sender};
 use std::{io,fs,path};
 
 #[macro_use] extern crate rocket;
-use rocket::{Rocket,response};
+use rocket::{Rocket,response,request::FromRequest};
 use rocket::http;
 use rocket_contrib::templates::Template;
-use tera;
 use colored::*;
 
 pub mod utils;
-use utils::{executer,embed};
-
-
-const is_debug: bool = true;
+use utils::{executer,embed,security};
 
 
 #[get("/execute/<command>")]
@@ -29,9 +25,10 @@ fn execute(command: String) -> io::Result<String> {
     Ok(output)
 }
 
+
 #[get("/")]
 fn index() -> Template {
-    let mut context: HashMap<String,String> = HashMap::new();
+    let mut context:HashMap<String,String> = HashMap::new();
     Template::render("index", &context)
 }
 
@@ -61,11 +58,54 @@ fn main() {
     //embed::init();
 
     
-    let r = rocket::ignite()
+    let r = thread::spawn(|| {
+        let r = rocket::ignite()
         .mount("/",rocket_contrib::serve::StaticFiles::from("page"))
-        .mount("/api",rocket::routes![execute])
+        .mount("/api",rocket::routes![execute,index])
         .attach(Template::fairing())
         .launch();
+        r
+    });
+
+
+    let mut totp_vec: HashMap<i32,security::totp::_TOTP> = HashMap::new();
+    let mut first_time = true;
+
+    loop {
+        let totp = if first_time {
+            first_time = false;
+            security::totp::totp_process(0)
+        }
+        else {
+            security::totp::totp_process(25)
+        };
+
+        println!("New OTP:\nCode:{:}", totp.value);
+
+        let mut old_key = 0;
+        for (key,totp) in &totp_vec {
+            let is_key_old = if totp.lifetime.elapsed().as_secs() > 30 {
+                println!("Key: {} is to old bruh",key);
+                (true,key)
+            }
+            else
+            {
+                (false,key)
+            };
+
+            if is_key_old.0 {
+                old_key = *is_key_old.1;
+            } 
+        };
+
+        if old_key > 0 {
+            totp_vec.remove(&old_key);
+            println!("Key: {} was removed from chain",&old_key);
+        }
+
+        totp_vec.insert(totp.value, totp);
+        thread::sleep(time::Duration::from_millis(10));
+    }
 }
 
 
