@@ -1,197 +1,184 @@
 body {
-    background-image: repeating-linear-gradient(0deg,green,black);
-    margin: 0px 0px 0px 0px;
-    padding-right: 0%;
+    margin: 0;
     border: none;
+    background-image: url(assets/bg.gif);
+    background-size: 100% 100%;
+
+    font-family: DOTMATRIX;
+
+    display: flex;
+
+    align-content: center;
+    justify-content: center;
 }
 
-@keyframes gardientfade {
-    0% {
-        background-position: 0% 50%
+@font-face {
+    font-family: DOTMATRIX;
+    src: url(assets/fonts/DOTMATRI.TTF);
+}
+
+@keyframes fade {
+    0%,100% {
+        background-position: 0 0;
     }
 
     50% {
-        background-position: 100% 25%
-    }
-
-    100% {
-        background-position: 0% 50%
+        background-position: 100% 0;
     }
 }
 
 
-.topbar {
-    width: 100%;
-    height: 0%;
+.chatcontainer {
+    width: 90%;
+    height: 25%;
 
-    position: absolute;
-    display: flex;
+    margin-top: 30px;
+    margin-bottom: 30px;
 
-    justify-content: center;
-    z-index: 10;
+    overflow: scroll;
+    overflow-x: hidden;
+
+    border: double;
+    background-color: rgba(75, 108, 255, 0.534);
+
+    transition: height 400ms ease-in-out;
 }
 
-.topbar img{
-    width: 280px;
-    height: 120px;
-}
-
-.content {
-    width: 100%;
+.chatcontainer:hover {
     height: 90%;
+}
 
-    padding-top: 10%;
-    padding-bottom: 100px;
+.chatcontainer .boxes {
+    list-style: none;
+    list-style-type: none;
 
-    position: fixed;
-    display: flex;
+    display: grid;
+    position: relative;
+    
     justify-content: center;
     align-content: center;
 
-    z-index: 1;
+    margin: 2%;
+    padding: 4px;
+
+    grid-template-columns: repeat(auto-fill,230px);
+    grid-auto-rows: 220px;
 }
 
-.content .module {
-    width: 50%;
+.chatcontainer .chatinput {
+    width: 100%;
+    height: 40px;
+
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+.chatcontainer .chatinput input {
+    width: 80%;
     height: 100%;
 
-    display: flex;
-    justify-content: space-evenly;
-    align-content: center;
+    border: none;
+    outline: none;
 
-    
-    /*background-color: rgba(17, 16, 16, 0.673);*/
+    font-family: DOTMATRIX;
+    font-size: large;
+
+    text-align: center;
+
+    background-color: rgba(46, 45, 45, 0.900);
+    transition: background-color 250ms ease-in;
 }
 
-.content .module .items {
+.chatcontainer .chatinput input:focus {
+    animation: typing 1s steps(40,end) forwards;
+    background-color: rgba(46, 45, 45, 0.300);
+}
+
+.chatcontainer li {
+    margin: 1% 1% 1% 1%;
+    padding: 1% 1% 1% 1%;
+}
+
+.chatcontainer li div {
+    width: 210px;
+    height: 140px;
+
+
+    background-color: crimson;
+    grid-row-end: 0;
+}
+
+.chatcontainer li div .infobar {
     width: 100%;
-    height: 10%;
+    height: 30%;
 
-    position: relative;
     display: grid;
+    grid-template-columns: repeat(auto-fill,100%);
+    grid-auto-rows: 10px;
 
-    grid-template-columns: min-content;
-    
-
-    align-items: center;
-    align-content: space-between;
-
-    justify-items: center;
     justify-content: center;
 
-    padding: 5%;
+    background-color: coral;
 }
 
-.content .module .items .optionbutton {
-    width: 100%;
-    height: 95%;
+.chatcontainer li div .infobar #id {
+    position: relative;
+    margin: 5px 6px 6px 0px;
 
-    background-size: 300% 300%;
-    background-image: repeating-linear-gradient(45deg,rgba(0, 0, 0, 0.6),rgba(82, 81, 79, 0.6));
-    animation: gardientfade 5s linear infinite;
+    justify-self: right;
+
+    grid-row-end: 1;
+}
+
+.chatcontainer li div .infobar #status {
+    position: relative;
+    margin: 0% 0% 0% 0%;
+    padding: 0% 0% 0% 0%;
+
+    justify-self: center;
+
+    grid-row-end: 0;
+}
+
+.chatcontainer li div .infobar #sign-button {
+    width: 60px;
+    height: 20px;
+
+    display: flex;
+    position: absolute; 
+
+    align-self: baseline;
+    justify-content: center;
     
+    margin: 2px;
 
-    margin-top: 5%;
-    z-index: 0;
+    outline: none;
+
+    background-size: 400% 400%;
+    background-image: linear-gradient(60deg,gold,orange);
+
+    font-family: DOTMATRIX;
+
+    animation: fade 2s linear infinite;
+    transition: all 200ms ease;
 }
 
-.content .module .items .optionbutton button{
-    margin: 13px;
-    margin-top: -5%;
+.chatcontainer li div .infobar #sign-button:hover {
+    transform: scaleX(200%) scaleY(150%);
 
-    height: 90px;
- }
+    background-size: 400% 400%;
+    background-image: linear-gradient(60deg,orange,gold);
 
-.content .module .items .optionbutton input[type=text] {
-    width: 120px;
-    height: 0;
-
-    margin: 13px;
-   
-    border-style: dashed;
-    border-width: 1px;
-
-    font-size: large;
-    text-align: center;
-
-    background-color: rgba(17, 16, 16, 0.673);
-    color: azure;
-
-    transition: height 1s ease-out;
+    animation: fade 500ms linear infinite;
 }
 
-.content .module .items .optionbutton input:focus {
-    height: 30px;
-    border-width: 0px;
-}
+.chatcontainer li div #content {
+    text-align: left;
+    text-anchor: middle;    
 
-.content button {
-    width: 120px;
-    height: 120px;
+    font-size: medium;
 
-    margin: 10%;
-    
-    border-style: solid;
-    border-width: 1px;
-
-    font-size: large;
-    text-align: center;
-
-    background-color: rgba(17, 16, 16, 0.673);
-    color: azure;
-}
-
-.content button:hover {
-    animation: hoveranimation 1s linear infinite;
-}
-
-@keyframes hoveranimation {
-    0% {
-        background-color: rgba(17, 16, 16, 0.673);
-        transform: scale(100%);
-        border-width: 2px;
-    }
-
-    50% {
-        background-color: rgba(195, 199, 193, 0.238);
-        transform: scale(110%);
-    }
-
-    70% {
-        border-width: 1px;
-    }
-
-    100% {
-        background-color: rgba(17, 16, 16, 0.673);
-        transform: scale(100%);
-        border-width: 2px;
-    }
-}
-
-.content button:focus {
-    animation: clickanimation 600ms ease-out normal;
-}
-
-@keyframes clickanimation {
-    0% {
-        background-color: rgba(17, 16, 16, 0.673);
-        transform: scale(100%);
-    }
-
-    60% {
-        background-color: rgba(123, 236, 71, 0.273);
-        transform: scale(80%);
-    }
-
-    100% {
-        background-color: rgba(17, 16, 16, 0.673);
-        transform: scale(100%);
-    }
-}
-
-.content h2{
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: x-large;
-
-    color: azure;
+    margin-top: 8px;
+    padding-left: 10px;
 }

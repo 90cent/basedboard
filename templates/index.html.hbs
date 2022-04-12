@@ -1,7 +1,40 @@
 <!-- templates/index.html.hbs -->
 
-<html>
-    <body>
-        <h1> BASED BOARD </h1>
-    </body>
-</html>
+<head>
+    <link rel="stylesheet" href="/page/style.css">
+</head>
+
+<body>
+    <div class="chatcontainer">
+        <div class="chatinput">
+            <input type="text" name="" id="inputbox" autofocus>
+        </div>
+
+        <ul class="boxes">
+            {{{boxes}}}
+        </ul>
+    </div>
+
+</body>
+
+
+<script>
+    var input = document.getElementById("inputbox");
+
+    input.addEventListener("keypress",(event) => {
+        if(event.keyCode === 13) {
+            event.preventDefault();
+            console.log("Sending input...");
+
+            let text = input.value;
+            input.value = "Message is going to be sent";
+
+
+
+            let request = new XMLHttpRequest();
+            
+
+            //send to backend
+        }
+    })
+</script>
